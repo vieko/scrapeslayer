@@ -7,7 +7,6 @@ export interface SocialMediaLink {
 export interface CreatorData {
   username: string;
   displayName: string;
-  followers: string;
   description: string;
   socialMediaLinks: SocialMediaLink[];
   email?: string;
@@ -17,7 +16,7 @@ export interface CreatorData {
   error?: string;
 }
 
-export interface YouTubeCreatorData extends Omit<CreatorData, 'followers' | 'team'> {
+export interface YouTubeCreatorData extends Omit<CreatorData, 'team'> {
   subscribers: string;
   videoCount: string;
   viewCount: string;

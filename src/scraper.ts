@@ -204,15 +204,7 @@ export class ScrapeSlayer {
       const username = window.location.pathname.split('/')[1] || '';
       const displayName = getText('h1') || username;
       
-      // Extract followers count - try multiple selectors
-      let followersText = getText('[data-test-selector="followers-count"]');
-      if (!followersText) {
-        const followersElements = Array.from(document.querySelectorAll('*')).find((el: Element) => 
-          el.textContent?.includes('followers')
-        );
-        followersText = followersElements?.textContent || '';
-      }
-      const followers = followersText.replace(/[^0-9.KM]/g, '');
+
 
       // Extract description - try multiple selectors
       let description = getText('[data-test-selector="about-panel"] p');
@@ -248,7 +240,6 @@ export class ScrapeSlayer {
       return {
         username,
         displayName,
-        followers,
         description,
         socialMediaLinks,
         email,

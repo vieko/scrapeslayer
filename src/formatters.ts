@@ -45,9 +45,6 @@ export class OutputFormatter {
       }
     } else {
       const twitchData = data as CreatorData;
-      if (twitchData.followers) {
-        markdown += `**Followers**: ${twitchData.followers}\n`;
-      }
       if (twitchData.team) {
         markdown += `**Team**: ${twitchData.team}\n`;
       }
