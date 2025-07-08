@@ -17,9 +17,17 @@ export interface CreatorData {
   error?: string;
 }
 
+export interface YouTubeCreatorData extends Omit<CreatorData, 'followers' | 'team'> {
+  subscribers: string;
+  videoCount: string;
+  viewCount: string;
+  joinDate: string;
+  country?: string;
+}
+
 export interface ScrapingResult {
   success: boolean;
-  data?: CreatorData;
+  data?: CreatorData | YouTubeCreatorData;
   error?: string;
   url: string;
 }

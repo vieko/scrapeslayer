@@ -1,4 +1,4 @@
-import { CreatorData, ScrapingResult, BatchResult, SocialMediaLink } from './types';
+import { CreatorData, YouTubeCreatorData, ScrapingResult, BatchResult, SocialMediaLink } from './types';
 
 export class OutputFormatter {
   static formatAsJson(result: ScrapingResult | BatchResult): string {
@@ -19,25 +19,49 @@ export class OutputFormatter {
     }
 
     const data = result.data;
+    const isYouTube = 'subscribers' in data;
     let markdown = `# ${data.displayName}\n\n`;
     
     if (data.verified) {
-      markdown += `**Status**: Verified Partner ✓\n`;
+      markdown += `**Status**: Verified ${isYouTube ? 'Channel' : 'Partner'} ✓\n`;
     }
     
-    if (data.followers) {
-      markdown += `**Followers**: ${data.followers}\n`;
-    }
-    
-    if (data.team) {
-      markdown += `**Team**: ${data.team}\n`;
+    if (isYouTube) {
+      const youtubeData = data as YouTubeCreatorData;
+      if (youtubeData.subscribers) {
+        markdown += `**Subscribers**: ${youtubeData.subscribers}\n`;
+      }
+      if (youtubeData.videoCount) {
+        markdown += `**Videos**: ${youtubeData.videoCount}\n`;
+      }
+      if (youtubeData.viewCount) {
+        markdown += `**Total Views**: ${youtubeData.viewCount}\n`;
+      }
+      if (youtubeData.joinDate) {
+        markdown += `**Joined**: ${youtubeData.joinDate}\n`;
+      }
+      if (youtubeData.country) {
+        markdown += `**Country**: ${youtubeData.country}\n`;
+      }
+    } else {
+      const twitchData = data as CreatorData;
+      if (twitchData.followers) {
+        markdown += `**Followers**: ${twitchData.followers}\n`;
+      }
+      if (twitchData.team) {
+        markdown += `**Team**: ${twitchData.team}\n`;
+      }
     }
     
     if (data.description) {
       markdown += `**Description**: ${data.description}\n`;
     }
     
-    markdown += `\n**Twitch**: https://www.twitch.tv/${data.username}\n\n`;
+    if (isYouTube) {
+      markdown += `\n**YouTube**: https://www.youtube.com/@${data.username}\n\n`;
+    } else {
+      markdown += `\n**Twitch**: https://www.twitch.tv/${data.username}\n\n`;
+    }
 
     if (data.socialMediaLinks.length > 0) {
       markdown += `## Social Media Links\n\n`;
@@ -66,7 +90,7 @@ export class OutputFormatter {
   }
 
   private static formatBatchAsMarkdown(result: BatchResult): string {
-    let markdown = `# Twitch Creator Social Media Report\n\n`;
+    let markdown = `# Creator Social Media Report\n\n`;
     
     markdown += `## Summary\n\n`;
     markdown += `- **Total Creators**: ${result.summary.total}\n`;
@@ -102,7 +126,9 @@ export class OutputFormatter {
       'tiktok': 'TikTok',
       'discord': 'Discord',
       'steam': 'Steam',
-      'github': 'GitHub'
+      'github': 'GitHub',
+      'twitch': 'Twitch',
+      'facebook': 'Facebook'
     };
     
     return platformMap[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
