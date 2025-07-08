@@ -47,7 +47,8 @@ export class ScrapeSlayer {
     } else if (platform === 'youtube') {
       // Handle username only
       if (!input.includes('/')) {
-        return `https://www.youtube.com/@${input}/about`;
+        const username = input.startsWith('@') ? input.slice(1) : input;
+        return `https://www.youtube.com/@${username}/about`;
       }
       
       // Handle various YouTube URL formats

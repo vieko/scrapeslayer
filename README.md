@@ -38,13 +38,13 @@ npm run build
 #### Twitch Creators
 ```bash
 # By username
-docker run scrapeslayer cohhcarnage --format json
+docker run scrapeslayer twitch cohhcarnage --format json
 
 # By URL
-docker run scrapeslayer "https://twitch.tv/seum/about" --format markdown
+docker run scrapeslayer twitch "https://twitch.tv/seum/about" --format markdown
 
 # Output to file (using volume mount)
-docker run -v $(pwd):/output scrapeslayer cohhcarnage --format markdown --output /output/report.md
+docker run -v $(pwd):/output scrapeslayer twitch cohhcarnage --format markdown --output /output/report.md
 ```
 
 #### YouTube Creators
@@ -59,13 +59,13 @@ docker run scrapeslayer youtube "https://youtube.com/@MrBeast/about" --format ma
 docker run -v $(pwd):/output scrapeslayer youtube @MrBeast --format json --output /output/youtube-report.json
 ```
 
-#### Batch Processing
+#### Batch Processing (Twitch Only)
 ```bash
 # Comma-separated list
-docker run scrapeslayer --batch "cohhcarnage,seum,ninja" --format json
+docker run scrapeslayer twitch --batch "cohhcarnage,seum,ninja" --format json
 
 # From file (using volume mount)
-docker run -v $(pwd):/output scrapeslayer --file /output/creators.txt --format markdown --output /output/batch-report.md
+docker run -v $(pwd):/output scrapeslayer twitch --file /output/creators.txt --format markdown --output /output/batch-report.md
 ```
 
 ### Local Usage
@@ -73,37 +73,52 @@ docker run -v $(pwd):/output scrapeslayer --file /output/creators.txt --format m
 #### Twitch Creators
 ```bash
 # Single creator
-npm run dev cohhcarnage --format json
-npm run dev "https://twitch.tv/seum/about" --format markdown
+npm run dev -- twitch cohhcarnage --format json
+npm run dev -- twitch "https://twitch.tv/seum/about" --format markdown
 
 # Batch processing
-npm run dev --batch "cohhcarnage,seum" --format json
-npm run dev --file creators.txt --format markdown --output report.md
+npm run dev -- twitch --batch "cohhcarnage,seum" --format json
+npm run dev -- twitch --file creators.txt --format markdown --output report.md
 ```
 
 #### YouTube Creators
 ```bash
 # Single creator
-npm run dev youtube @MrBeast --format json
-npm run dev youtube "https://youtube.com/@MrBeast/about" --format markdown
+npm run dev -- youtube @MrBeast --format json
+npm run dev -- youtube "https://youtube.com/@MrBeast/about" --format markdown
 
 # Output to file
-npm run dev youtube @MrBeast --format json --output youtube-report.json
+npm run dev -- youtube @MrBeast --format json --output youtube-report.json
 ```
 
 ## CLI Options
 
-### Main Command (Twitch)
+### Main Command
 ```
-Usage: scrapeslayer [options] [input]
+Usage: scrapeslayer [options] [command]
 
 ScrapeSlayer - Advanced social media scraping tool for Twitch and YouTube creator pages
 
+Options:
+  -V, --version              output the version number
+  -h, --help                 display help for command
+
+Commands:
+  twitch [options] [input]   Scrape Twitch creator pages
+  youtube [options] [input]  Scrape YouTube creator pages
+  help [command]             display help for command
+```
+
+### Twitch Command
+```
+Usage: scrapeslayer twitch [options] [input]
+
+Scrape Twitch creator pages
+
 Arguments:
-  input                    Twitch username or URL to scrape
+  input                   Twitch username or URL to scrape
 
 Options:
-  -V, --version           display version number
   -f, --format <format>   Output format (json|markdown) (default: "json")
   -o, --output <file>     Output file (default: stdout)
   -b, --batch <creators>  Comma-separated list of creators
@@ -162,25 +177,29 @@ shroud
   "data": {
     "username": "cohhcarnage",
     "displayName": "CohhCarnage",
-    "followers": "1.7M",
-    "description": "Happy, helpful and respectful people welcome. Come say hello!",
+    "description": "Browse",
     "socialMediaLinks": [
       {
         "platform": "youtube",
-        "url": "https://Youtube.com/CohhCarnage",
-        "label": "Cohh on YouTube"
+        "url": "http://www.youtube.com/CohhCarnage",
+        "label": ""
+      },
+      {
+        "platform": "twitter",
+        "url": "http://www.twitter.com/CohhCarnage",
+        "label": ""
       }
     ],
     "email": null,
     "additionalLinks": [
       {
         "platform": "other",
-        "url": "https://www.Cohhilition.com",
+        "url": "https://www.cohhilition.com/",
         "label": "The Cohhilition Website"
       }
     ],
     "team": "Loaded",
-    "verified": true
+    "verified": false
   },
   "url": "https://www.twitch.tv/cohhcarnage/about"
 }
@@ -193,30 +212,40 @@ shroud
   "data": {
     "username": "MrBeast",
     "displayName": "MrBeast",
-    "subscribers": "329M",
-    "videoCount": "741",
-    "viewCount": "51,973,451,869",
-    "joinDate": "Feb 20, 2012",
+    "subscribers": "28.1M",
+    "videoCount": "883",
+    "viewCount": "75,871,132",
+    "joinDate": "19 Feb 2012",
     "country": "United States",
-    "description": "I want to make the world a better place before I die.",
+    "description": "SUBSCRIBE FOR A COOKIE!",
     "socialMediaLinks": [
       {
         "platform": "twitter",
         "url": "https://twitter.com/MrBeast",
-        "label": "Twitter"
+        "label": "twitter.com/MrBeast"
       },
       {
         "platform": "instagram",
-        "url": "https://instagram.com/mrbeast",
-        "label": "Instagram"
+        "url": "https://www.instagram.com/mrbeast/",
+        "label": "instagram.com/mrbeast"
+      },
+      {
+        "platform": "facebook",
+        "url": "https://facebook.com/mrbeast/",
+        "label": "facebook.com/mrbeast"
       }
     ],
-    "email": null,
+    "email": "chucky@mrbeastbusiness.com",
     "additionalLinks": [
       {
         "platform": "other",
-        "url": "https://www.mrbeast.store",
-        "label": "MrBeast Store"
+        "url": "https://www.beastgames.com",
+        "label": "beastgames.com"
+      },
+      {
+        "platform": "other",
+        "url": "https://mrbeast.store/",
+        "label": "https://mrbeast.store"
       }
     ],
     "verified": true
@@ -229,47 +258,51 @@ shroud
 ```markdown
 # CohhCarnage
 
-**Status**: Verified Partner ✓
-**Followers**: 1.7M
 **Team**: Loaded
-**Description**: Happy, helpful and respectful people welcome. Come say hello!
+**Description**: Browse
 
 **Twitch**: https://www.twitch.tv/cohhcarnage
 
 ## Social Media Links
 
-- **YouTube**: [Cohh on YouTube](https://Youtube.com/CohhCarnage)
-- **Twitter**: [Cohh on Twitter](https://Twitter.com/CohhCarnage)
-- **TikTok**: [Cohh on TikTok](https://TikTok.com/@cohhcarnage)
+- **YouTube**: [](http://www.youtube.com/CohhCarnage)
+- **Twitter**: [](http://www.twitter.com/CohhCarnage)
+- **TikTok**: [](https://www.tiktok.com/@cohhcarnage)
 
 ## Additional Links
 
-- [The Cohhilition Website](https://www.Cohhilition.com)
-- [The Cohhilition on Steam](https://steamcommunity.com/groups/TheCohhilition)
+- [The Cohhilition Website](https://www.cohhilition.com/)
+- [](https://lurkit.cc/7DaysCohhcarnage)
 ```
 
 ### YouTube Markdown Output
 ```markdown
 # MrBeast
 
-**Status**: Verified ✓
-**Subscribers**: 329M
-**Videos**: 741
-**Total Views**: 51,973,451,869
-**Joined**: Feb 20, 2012
+**Status**: Verified Channel ✓
+**Subscribers**: 28.1M
+**Videos**: 883
+**Total Views**: 75,871,132
+**Joined**: 19 Feb 2012
 **Country**: United States
-**Description**: I want to make the world a better place before I die.
+**Description**: SUBSCRIBE FOR A COOKIE!
 
 **YouTube**: https://www.youtube.com/@MrBeast
 
 ## Social Media Links
 
-- **Twitter**: [Twitter](https://twitter.com/MrBeast)
-- **Instagram**: [Instagram](https://instagram.com/mrbeast)
+- **Twitter**: [twitter.com/MrBeast](https://twitter.com/MrBeast)
+- **Instagram**: [instagram.com/mrbeast](https://www.instagram.com/mrbeast/)
+- **Facebook**: [facebook.com/mrbeast](https://facebook.com/mrbeast/)
 
 ## Additional Links
 
-- [MrBeast Store](https://www.mrbeast.store)
+- [beastgames.com](https://www.beastgames.com)
+- [https://mrbeast.store](https://mrbeast.store/)
+
+## Contact
+
+**Email**: chucky@mrbeastbusiness.com
 ```
 
 ## Docker Examples
@@ -277,8 +310,8 @@ shroud
 ### Basic Usage
 ```bash
 # Twitch scraping
-docker run scrapeslayer cohhcarnage
-docker run scrapeslayer seum --format markdown
+docker run scrapeslayer twitch cohhcarnage
+docker run scrapeslayer twitch seum --format markdown
 
 # YouTube scraping
 docker run scrapeslayer youtube @MrBeast
@@ -291,7 +324,7 @@ docker run scrapeslayer youtube @MrBeast --format markdown
 echo -e "cohhcarnage\\nseum\\nninja" > creators.txt
 
 # Process batch and save to file
-docker run -v $(pwd):/output scrapeslayer \\
+docker run -v $(pwd):/output scrapeslayer twitch \\
   --file /output/creators.txt \\
   --format markdown \\
   --output /output/report.md
@@ -300,8 +333,8 @@ docker run -v $(pwd):/output scrapeslayer \\
 ### Pipeline Usage
 ```bash
 # Twitch - Pipe JSON output to jq for processing
-docker run scrapeslayer cohhcarnage --format json | jq '.data.socialMediaLinks'
-docker run scrapeslayer seum --format json | jq -r '.data.email // "No email found"'
+docker run scrapeslayer twitch cohhcarnage --format json | jq '.data.socialMediaLinks'
+docker run scrapeslayer twitch seum --format json | jq -r '.data.email // "No email found"'
 
 # YouTube - Extract specific data
 docker run scrapeslayer youtube @MrBeast --format json | jq '.data.subscribers'
