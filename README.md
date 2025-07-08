@@ -355,4 +355,4 @@ docker run scrapeslayer --help
 
 ## License
 
-ISC License - see package.json for details.
+MIT License - see [LICENSE](LICENSE) file for details.

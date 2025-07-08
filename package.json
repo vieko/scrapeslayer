@@ -12,9 +12,13 @@
     "dev": "ts-node src/cli.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Vieko Franetovic",
+    "url": "https://github.com/vieko",
+    "email": "48670+vieko@users.noreply.github.com"
+  },
+  "private": true,
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^24.0.11",
