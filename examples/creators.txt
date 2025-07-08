@@ -1,0 +1,8 @@
+# Example creators file
+# Lines starting with # are comments and will be ignored
+
+cohhcarnage
+seum
+https://www.twitch.tv/ninja/about
+shroud
+pokimane

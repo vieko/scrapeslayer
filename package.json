@@ -1,0 +1,28 @@
+{
+  "name": "scrapeslayer",
+  "version": "1.0.0",
+  "description": "ScrapeSlayer - Advanced social media scraping tool",
+  "main": "dist/cli.js",
+  "bin": {
+    "scrapeslayer": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "ts-node src/cli.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "^24.0.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "commander": "^14.0.0",
+    "playwright": "^1.53.2"
+  }
+}
