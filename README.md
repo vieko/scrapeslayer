@@ -1,11 +1,11 @@
 # ScrapeSlayer
 
-A TypeScript CLI tool that scrapes social media links and contact information from Twitch creator pages using Playwright. Designed to run in Docker for cross-platform compatibility.
+A TypeScript CLI tool that scrapes social media links and contact information from Twitch and YouTube creator pages using Playwright. Designed to run in Docker for cross-platform compatibility.
 
 ## Features
 
-- 🎯 **Single Creator Scraping**: Scrape individual Twitch creators by username or URL
-- 📦 **Batch Processing**: Process multiple creators from comma-separated list or file
+- 🎯 **Multi-Platform Scraping**: Scrape Twitch and YouTube creators by username or URL
+- 📦 **Batch Processing**: Process multiple Twitch creators from comma-separated list or file
 - 📄 **Multiple Output Formats**: JSON and Markdown output formats
 - 🐳 **Docker Support**: Runs in Docker for consistent cross-platform behavior
 - 📁 **File I/O**: Output to files or stdout for piping
@@ -35,7 +35,7 @@ npm run build
 
 ### Docker Usage
 
-#### Single Creator
+#### Twitch Creators
 ```bash
 # By username
 docker run scrapeslayer cohhcarnage --format json
@@ -45,6 +45,18 @@ docker run scrapeslayer "https://twitch.tv/seum/about" --format markdown
 
 # Output to file (using volume mount)
 docker run -v $(pwd):/output scrapeslayer cohhcarnage --format markdown --output /output/report.md
+```
+
+#### YouTube Creators
+```bash
+# By username
+docker run scrapeslayer youtube @MrBeast --format json
+
+# By URL
+docker run scrapeslayer youtube "https://youtube.com/@MrBeast/about" --format markdown
+
+# Output to file (using volume mount)
+docker run -v $(pwd):/output scrapeslayer youtube @MrBeast --format json --output /output/youtube-report.json
 ```
 
 #### Batch Processing
@@ -58,6 +70,7 @@ docker run -v $(pwd):/output scrapeslayer --file /output/creators.txt --format m
 
 ### Local Usage
 
+#### Twitch Creators
 ```bash
 # Single creator
 npm run dev cohhcarnage --format json
@@ -68,12 +81,23 @@ npm run dev --batch "cohhcarnage,seum" --format json
 npm run dev --file creators.txt --format markdown --output report.md
 ```
 
+#### YouTube Creators
+```bash
+# Single creator
+npm run dev youtube @MrBeast --format json
+npm run dev youtube "https://youtube.com/@MrBeast/about" --format markdown
+
+# Output to file
+npm run dev youtube @MrBeast --format json --output youtube-report.json
+```
+
 ## CLI Options
 
+### Main Command (Twitch)
 ```
 Usage: scrapeslayer [options] [input]
 
-ScrapeSlayer - Advanced social media scraping tool for Twitch creator pages
+ScrapeSlayer - Advanced social media scraping tool for Twitch and YouTube creator pages
 
 Arguments:
   input                    Twitch username or URL to scrape
@@ -87,14 +111,39 @@ Options:
   -h, --help              display help for command
 ```
 
+### YouTube Command
+```
+Usage: scrapeslayer youtube [options] [input]
+
+Scrape YouTube creator pages
+
+Arguments:
+  input                    YouTube username or URL to scrape
+
+Options:
+  -f, --format <format>   Output format (json|markdown) (default: "json")
+  -o, --output <file>     Output file (default: stdout)
+  -h, --help              display help for command
+```
+
+**Note**: Batch processing is currently only available for Twitch creators.
+
 ## Input Formats
 
-### Single Creator
+### Twitch Creators
 - **Username**: `cohhcarnage`
 - **Full URL**: `https://www.twitch.tv/cohhcarnage/about`
 - **Short URL**: `http://twitch.tv/seum/about`
 
-### Batch File Format
+### YouTube Creators
+- **Username with @**: `@MrBeast`
+- **Username without @**: `MrBeast`
+- **Full URL**: `https://www.youtube.com/@MrBeast/about`
+- **Channel URL**: `https://www.youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA/about`
+- **Custom URL**: `https://www.youtube.com/c/MrBeast/about`
+- **User URL**: `https://www.youtube.com/user/MrBeast6000/about`
+
+### Batch File Format (Twitch Only)
 Create a text file with one creator per line:
 ```
 cohhcarnage
@@ -106,7 +155,7 @@ shroud
 
 ## Output Formats
 
-### JSON Output
+### Twitch JSON Output
 ```json
 {
   "success": true,
@@ -137,7 +186,46 @@ shroud
 }
 ```
 
-### Markdown Output
+### YouTube JSON Output
+```json
+{
+  "success": true,
+  "data": {
+    "username": "MrBeast",
+    "displayName": "MrBeast",
+    "subscribers": "329M",
+    "videoCount": "741",
+    "viewCount": "51,973,451,869",
+    "joinDate": "Feb 20, 2012",
+    "country": "United States",
+    "description": "I want to make the world a better place before I die.",
+    "socialMediaLinks": [
+      {
+        "platform": "twitter",
+        "url": "https://twitter.com/MrBeast",
+        "label": "Twitter"
+      },
+      {
+        "platform": "instagram",
+        "url": "https://instagram.com/mrbeast",
+        "label": "Instagram"
+      }
+    ],
+    "email": null,
+    "additionalLinks": [
+      {
+        "platform": "other",
+        "url": "https://www.mrbeast.store",
+        "label": "MrBeast Store"
+      }
+    ],
+    "verified": true
+  },
+  "url": "https://www.youtube.com/@MrBeast/about"
+}
+```
+
+### Twitch Markdown Output
 ```markdown
 # CohhCarnage
 
@@ -160,15 +248,41 @@ shroud
 - [The Cohhilition on Steam](https://steamcommunity.com/groups/TheCohhilition)
 ```
 
+### YouTube Markdown Output
+```markdown
+# MrBeast
+
+**Status**: Verified ✓
+**Subscribers**: 329M
+**Videos**: 741
+**Total Views**: 51,973,451,869
+**Joined**: Feb 20, 2012
+**Country**: United States
+**Description**: I want to make the world a better place before I die.
+
+**YouTube**: https://www.youtube.com/@MrBeast
+
+## Social Media Links
+
+- **Twitter**: [Twitter](https://twitter.com/MrBeast)
+- **Instagram**: [Instagram](https://instagram.com/mrbeast)
+
+## Additional Links
+
+- [MrBeast Store](https://www.mrbeast.store)
+```
+
 ## Docker Examples
 
 ### Basic Usage
 ```bash
-# Simple scrape
+# Twitch scraping
 docker run scrapeslayer cohhcarnage
-
-# With custom format
 docker run scrapeslayer seum --format markdown
+
+# YouTube scraping
+docker run scrapeslayer youtube @MrBeast
+docker run scrapeslayer youtube @MrBeast --format markdown
 ```
 
 ### File Operations
@@ -185,11 +299,13 @@ docker run -v $(pwd):/output scrapeslayer \\
 
 ### Pipeline Usage
 ```bash
-# Pipe JSON output to jq for processing
+# Twitch - Pipe JSON output to jq for processing
 docker run scrapeslayer cohhcarnage --format json | jq '.data.socialMediaLinks'
-
-# Save specific data
 docker run scrapeslayer seum --format json | jq -r '.data.email // "No email found"'
+
+# YouTube - Extract specific data
+docker run scrapeslayer youtube @MrBeast --format json | jq '.data.subscribers'
+docker run scrapeslayer youtube @MrBeast --format json | jq '.data.socialMediaLinks'
 ```
 
 ## Error Handling
