@@ -37,9 +37,6 @@ export class OutputFormatter {
       if (youtubeData.viewCount) {
         markdown += `**Total Views**: ${youtubeData.viewCount}\n`;
       }
-      if (youtubeData.joinDate) {
-        markdown += `**Joined**: ${youtubeData.joinDate}\n`;
-      }
       if (youtubeData.country) {
         markdown += `**Country**: ${youtubeData.country}\n`;
       }

@@ -20,7 +20,6 @@ export interface YouTubeCreatorData extends Omit<CreatorData, 'team'> {
   subscribers: string;
   videoCount: string;
   viewCount: string;
-  joinDate: string;
   country?: string;
 }
 

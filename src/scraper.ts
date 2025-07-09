@@ -348,15 +348,7 @@ export class ScrapeSlayer {
         viewCount = match ? match[1] : '';
       }
 
-      // Extract join date
-      let joinDate = '';
-      const joinElements = Array.from(document.querySelectorAll('*')).find((el: Element) => 
-        el.textContent?.includes('Joined') && el.textContent?.match(/Joined\s+.+/i)
-      );
-      if (joinElements) {
-        const match = joinElements.textContent?.match(/Joined\s+(.+)/i);
-        joinDate = match ? match[1] : '';
-      }
+      // Join date extraction removed due to data corruption issues
 
       // Extract country
       let country = '';
@@ -409,7 +401,6 @@ export class ScrapeSlayer {
         subscribers,
         videoCount,
         viewCount,
-        joinDate,
         country,
         description,
         socialMediaLinks,
